@@ -63,7 +63,8 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::find($id);
+        return view('backend.category.edit',['category' => $category]);
     }
 
     /**
@@ -71,7 +72,29 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $category = Category::find($id);
+        $category->name = $request->name;
+
+        $icon = $request->icon; 
+        if($icon){
+            if(file_exists($category->icon)){
+                unlink($category->icon);
+            }
+
+                $iconName = 'category'.rand().time().'.'.$icon->extension();
+                $icon->move('database/category-images/',$iconName);
+                $category->icon = 'database/category-images/'.$iconName;
+            
+            
+        }
+
+        $category->save();
+        Toastr::success('Category Updated Successfully');
+        return back();
     }
 
     /**
@@ -79,6 +102,12 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Category::find($id);
+        if(file_exists($category->icon)){
+            unlink($category->icon);
+        }
+        $category->delete();
+        Toastr::success('Category Deleted Successfully');
+        return back();
     }
 }

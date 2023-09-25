@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\BlogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Backend\CategoryController;
@@ -23,4 +24,5 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
     Route::resource('category',CategoryController::class);
+    Route::resource('blog',BlogController::class);
 });

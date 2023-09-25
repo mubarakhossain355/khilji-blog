@@ -37,8 +37,12 @@
                         <td><img src="{{asset($category->icon)}}" alt="" height="60" width="80"></td>
                         <td>{{$category->status == 1 ?'Active':'Inactive'}}</td>
                         <td>
-                            <a href="" class="btn btn-sm btn-success">Edit</a>
-                            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                            <a href="{{route('category.edit',$category->id)}}" class="btn btn-sm btn-success">Edit</a>
+                            <form action="{{route('category.destroy',$category->id)}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-danger mt-2" type="submit">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach
